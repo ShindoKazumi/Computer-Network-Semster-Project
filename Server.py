@@ -8,14 +8,13 @@ port = int(port)
 s.bind((host, port))
 
 s.listen(1)
+# Establish connection with controller
+contConn, addr = s.accept()
+# code to return list to controller
 
+
+contConn.close()
 while True:
-	# Establish connection with controller
-	contConn, addr = s.accept()
-	# code to return list to controller
-
-
-	contConn.close()
 	# Establish connection with displayer
 	conn, addr = s.accept()     
 	print 'Got connection from', addr
