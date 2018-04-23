@@ -1,21 +1,32 @@
-import socket                         # Import socket module
+import socket
 
-s = socket.socket()                   # Create a socket object
-host = socket.gethostname()           # Get local machine name
-port = 9999                           # Reserve a port for your service.
-s.bind((host, port))                  # Bind to the port
-s.listen(5)                           # Now wait for client connection.
+c = socket.socket()
+s = socket.socket()        
+host = socket.gethostname() 
+port = raw_input('Enter port number:')
+port = int(port)
+s.bind((host, port))
+
+s.listen(1)
+
 while True:
-  c, addr = s.accept()                # Establish connection with client.
-  print 'Got connection from', addr
-  print "Getting file name..."
-  name = c.recv(1024)
-  f = open(name,'rb')                 # Open file requested by client
-  l = f.read(1024)
-  while (l):
-    c.send(l)
-    l = f.read(1024)
-  f.close()
-  print "Done Sending"
-  c.shutdown(socket.SHUT_WR)
-  c.close()
+	# Establish connection with controller
+	contConn, addr = s.accept()
+	# code to return list to controller
+
+
+	contConn.close()
+	# Establish connection with displayer
+	conn, addr = s.accept()     
+	print 'Got connection from', addr
+	print "Getting file name..."
+	name = conn.recv(1024)
+	f = open(name,'rb')
+	l = f.read(1024)
+	while (l):
+		conn.send(l)
+		l = f.read(1024)
+	f.close()
+	print "Done Sending"
+	conn.shutdown(socket.SHUT_WR)
+	conn.close()
