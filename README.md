@@ -1,4 +1,4 @@
-# Computer-Network-Semster-Project
+# Computer-Network-Semester-Project
 This project needs to run in three separate hosts
 # Need to install pip by using: 
     sudo apt-get install python-pip python-dev build-essential
