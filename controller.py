@@ -23,6 +23,4 @@ while True:
 		print 'Connection address:', addr
 		break
 	# close connection with displayer
-	conn.close()	
-	s.close()
-	c.close()
+	conn.close()
