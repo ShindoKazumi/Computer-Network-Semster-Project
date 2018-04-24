@@ -13,10 +13,16 @@ class ProjectTopo( Topo ):
 		h3 = self.addHost( 'h3' )
 
 		s1 = self.addSwitch( 's1' )
-
-		self.addLink( s1, h1 )
+		s2 = self.addSwitch( 's2' )
+		s3 = self.addSwitch( 's3' )
+		
+		self.addLink( h1, s1 )
 		self.addLink( s1, h2 )
-		self.addLink( s1, h3 )
+		self.addLink( h2, s2 )
+		self.addLink( s2, h3 )
+		self.addLink( h3, s3 )
+		self.addLink( s3, h1 )
+		self.addLink( h1, s3 )
 
 def runProjectTopo():
 	
@@ -24,7 +30,7 @@ def runProjectTopo():
 
 	net = Mininet(
 		topo = topo,
-		controller = lambda name: RemoteController( name, ip= '192.168.56.101' ),
+		controller = lambda name: RemoteController( name, ip= '192.168.176.3' ),
 		switch = OVSSwitch,
 		autoSetMacs = True )
 
