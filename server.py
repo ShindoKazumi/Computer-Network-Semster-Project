@@ -1,4 +1,6 @@
 import socket
+from subprocess32 import Popen, PIPE
+
 
 c = socket.socket()
 s = socket.socket()        
@@ -11,6 +13,14 @@ s.listen(1)
 # Establish connection with controller
 contConn, addr = s.accept()
 # code to return list to controller
+cmd = c.recv(1024)
+
+cmd = cmd.split() #to get 'ls', '-la'
+
+p = Popen(cmd, stdout=PIPE)
+result = p.communicate()
+
+c.send(result[0])
 
 contConn.close()
 while True:

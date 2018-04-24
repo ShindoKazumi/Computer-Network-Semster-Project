@@ -20,6 +20,8 @@ while True:
 	conn, addr = c.accept()
 	while True:
 		# code to request list from server and then send to displayer
+		cmd = raw_input("user > ")
+		s.send(cmd)
 		print 'Connection address:', addr
 		break
 	# close connection with displayer
