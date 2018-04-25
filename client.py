@@ -3,15 +3,17 @@ import pdftotext				# import pdftotext		need to install into system using 'pip i
 from getch import getch, pause			# import getch			need to install into system using 'pip install py-getch'
 
 run = True
+# Gets server and controller port number for test runs
+# This has to be changed to a static port number
 
-# Get server and controller port from user input. This is for test runs
-# This has to be changed to static port numbers
-sPort = raw_input('Enter server port number: ')
-sPort = int(sPort)
+#sPort = raw_input('Enter server port number: ')
+#sPort = int(sPort)
 
-cPort = raw_input('Enter controller port number: ')
-cPport = int(cPort)
+#cPort = raw_input('Enter controller port number: ')
+#cPort = int(cPort)
 
+sPort = 9999
+cPort = 9998
 while run:
 	host = socket.gethostname()
 
@@ -23,30 +25,40 @@ while run:
 
 
 	while True:
-		name = raw_input('Enter name of file to display (enter exit to close): ')
-		if name == 'exit':
-			s.send('exit')
-			run = False
-			break
+		lst = c.recv(1024)
+		print('\nList of Files: \n')
+		print(lst)
+		#c.send('list')
 		f = open('tempFile','wb')
-		s.send(name)
-		l = s.recv(1024)
-		while (l):
-			f.write(l)
+		fail = True
+		while fail:
+			name = raw_input('Enter name of file to display (enter exit to close): ')
+			if name == 'exit':
+				s.send('exit')
+				run = False
+				sys.exit(0)	
+			
+			s.send(name)
 			l = s.recv(1024)
+			if l != 'error':
+				fail = False
+				while (l):
+					f.write(l)
+					l = s.recv(1024)
+			else:
+				print('File does not exist')
 		f.close()
-		print "Done Receiving"
-
 		# creating a pdf file object
 		pdfile = open('tempFile', 'rb')
 		pdf = pdftotext.PDF(pdfile)
 
 		pagenum = len(pdf)	
-		page = 0
+		page = -1
 		pagenum = int(pagenum)
 		page = int(page)
 
-		print 'Press the A and D keys to move through the file'
+		print '\nFile Ready to Display'
+		print 'Use A and D to move through the file'
 		print 'Or press Q to quit'
 
 		while True:
@@ -58,10 +70,12 @@ while run:
 				if page < pagenum-1:
 					page = page + 1
 				else:
+					print('End of File')
 					break
 			elif (input == 'Q') or (input == 'q'):
-			break
+				break
 			print(pdf[page])
 		break
-	# Close the socket when done
-	s.close()                                   
+# Close the socket when done
+c.close()
+s.close()

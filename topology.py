@@ -1,39 +1,25 @@
 from mininet.cli import CLI
-from mininet.log import setLogLevel
-from mininet.net import Mininet
 from mininet.topo import Topo
-from mininet.node import RemoteController, OVSSwitch
 
-class ProjectTopo( Topo ):
+class MyTopo( Topo ):
+    "Simple topology example."
 
-	def build( self ):
+    def __init__( self ):
+        "Create custom topo."
 
-		h1 = self.addHost( 'h1' )
-		h2 = self.addHost( 'h2' )
-		h3 = self.addHost( 'h3' )
+        # Initialize topology
+        Topo.__init__( self )
 
-		s1 = self.addSwitch( 's1' )
+        # Add hosts and switches
+        h1 = self.addHost( 'h1' )
+        h2 = self.addHost( 'h2' )
+        h3 = self.addHost( 'h3' )
+        s1 = self.addSwitch( 's1' )
 
-		self.addLink( s1, h1 )
-		self.addLink( s1, h2 )
-		self.addLink( s1, h3 )
+        # Add links
+        self.addLink( h1, s1 )
+        self.addLink( h2, s1 )
+        self.addLink( h3, s1 )
 
-def runProjectTopo():
-	
-	topo = ProjectTopo()
 
-	net = Mininet(
-		topo = topo,
-		controller = lambda name: RemoteController( name, ip= '192.168.56.101' ),
-		switch = OVSSwitch,
-		autoSetMacs = True )
-
-	net.start()
-
-	CLI( net )
-
-	net.stop()
-
-if __name__ == '__main__':
-	setLogLevel( 'info' )
-	runProjectTopo()
+topos = { 'mytopo': ( lambda: MyTopo() ) }
