@@ -5,7 +5,6 @@ This project needs to run in three separate hosts
     #1 Download update.sh and topo.sh files
     #2 On mininet run:
                         ./update.sh
-                        ./topo.sh
 # Option 2:
     #1 First update using:
                             sudo apt-get update
@@ -20,3 +19,13 @@ This project needs to run in three separate hosts
                             sudo pip install "subprocess32>=3.2.6"
     #6 Run topology using:
                             sudo mn --custom topology.py --topo mytopo
+
+# To Run Program:
+    #1 Put all program files in same directory
+    #2 Create a subdirectory called files
+    #3 Add all pdf files to that directory
+    #4 Run: ./topo.sh
+    #5 Run: xterm h1 h2 h3
+    #6 On h1 run: ./server.py
+    #7 On h2 run: ./controller.py
+    #8 On h3 run: ./client.py
